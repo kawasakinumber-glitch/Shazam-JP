@@ -11,8 +11,13 @@ st.title("🎵 Shazam 日時別データ分析")
 SHEET_URL = "https://docs.google.com/spreadsheets/d/1BO-Y5NS12H8ydqcWcICy6VH6iQrF6UqmdLxAL1e2Sn4/export?format=csv"
 
 @st.cache_data(ttl=600) # 10分間データをキャッシュして高速化
+    # 1列目の名前を強制的に 'datetime' にする
     df.columns.values[0] = 'datetime'
+    
+    # ➔ ここを修正：エラーになる行（文字など）を強制的に無視（NaT）にし、日付型に確定させます
     df['datetime'] = pd.to_datetime(df['datetime'], errors='coerce')
+    df = df.dropna(subset=['datetime']) # 日付になれなかった異常な行をここで削除
+    
     return df
 
 try:
