@@ -21,6 +21,8 @@ def load_data():
 
 try:
     df = load_data()
+    # on_bad_lines='skip' を追加し、列数が合わないエラー行（4行目など）を自動で飛ばします
+    df = pd.read_csv(SHEET_URL, on_bad_lines='skip')
 
     # 3. 2列目以降のヘッダー（曲名）の一覧を取得してソート
     track_list = sorted(list(df.columns[1:]))
