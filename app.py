@@ -36,7 +36,7 @@ try:
 
     if not filtered_df.empty:
         # 5. レイアウト（左右2カラムに分割）
-        col1, col2 = st.columns()
+        col1, col2 = st.columns(2)
 
         with col1:
             st.subheader("📈 Shazam数の推移")
