@@ -11,11 +11,7 @@ st.title("🎵 Shazam 日時別データ分析")
 SHEET_URL = "https://docs.google.com/spreadsheets/d/1BO-Y5NS12H8ydqcWcICy6VH6iQrF6UqmdLxAL1e2Sn4/export?format=csv"
 
 @st.cache_data(ttl=600) # 10分間データをキャッシュして高速化
-def load_data():
-    df = pd.read_csv(SHEET_URL)
-    # 1列目の名前が何であっても 'datetime' に統一する
     df.columns.values[0] = 'datetime'
-    # 日付と時間を自動判定して変換（エラーになる行は無効化）
     df['datetime'] = pd.to_datetime(df['datetime'], errors='coerce')
     return df
 
