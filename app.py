@@ -15,9 +15,8 @@ def load_data():
     # 列数が合わないエラー行を自動で飛ばす
     df = pd.read_csv(SHEET_URL, on_bad_lines='skip')
     
-    # ➔ 修正箇所：1列目（日付列）の列名だけを確実に 'datetime' に変更
-    first_column_name = df.columns[0]
-    df = df.rename(columns={first_column_name: 'datetime'})
+    # ➔ 【超重要：修正箇所】1列目（日付）の列名だけをピンポイントで 'datetime' に変更
+    df.rename(columns={df.columns[0]: 'datetime'}, inplace=True)
     
     # 日付と時間を自動判定して変換（エラーになる行は無効化）
     df['datetime'] = pd.to_datetime(df['datetime'], errors='coerce')
@@ -61,7 +60,7 @@ try:
         else:
             st.warning("選択された曲のデータが見つかりませんでした。")
     else:
-        st.error("スプレッドシートから曲名が読み込めませんでした。2列目以降に曲名が並んでいるか確認してください。")
+        st.error("スプレッドシートから曲名が読み込めませんでした。2列目以降に曲名が正しく並んでいるか確認してください。")
 
 except Exception as e:
     st.error(f"データの読み込みに失敗しました。エラー内容: {e}")
