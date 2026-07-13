@@ -28,8 +28,8 @@ def load_data():
 try:
     df = load_data()
 
-    # 3. 2列目以降のヘッダー（曲名）の一覧を取得してソート
-    track_list = sorted(list(df.columns[1:]))
+    # 3. 2列目以降のヘッダー（曲名）の一覧をスプレッドシートの並び順のまま取得
+    track_list = list(df.columns[1:])
     
     if track_list:
         selected_track = st.selectbox("分析したい曲名を選択してください：", track_list)
