@@ -8,7 +8,7 @@ st.title(" Shazam 日別データ分析")
 
 # 2. Googleスプレッドシートからデータを自動取得
 # ※「/edit#gid=0」の部分を「/export?format=csv」に置き換えてCSVとして読み込みます
-SHEET_URL = "https://docs.google.com/spreadsheets/d/1BO-Y5NS12H8ydqcWcICy6VH6iQrF6UqmdLxAL1e2Sn4/export?format=csv#gid=983227424"
+SHEET_URL = "https://docs.google.com/spreadsheets/d/1BO-Y5NS12H8ydqcWcICy6VH6iQrF6UqmdLxAL1e2Sn4/export?format=csv"
 
 @st.cache_data(ttl=600) # 10分間データをキャッシュして高速化
 def load_data():
