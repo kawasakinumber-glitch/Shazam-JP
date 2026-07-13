@@ -8,7 +8,7 @@ st.title("🎵 Shazam 日時別データ分析")
 
 # 2. Googleスプレッドシートからデータを自動取得
 # ※ YOUR_SHEET_ID の部分はご自身のスプレッドシートのIDに書き換えてください
-SHEET_URL = "https://docs.google.com/spreadsheets/d/1BO-Y5NS12H8ydqcWcICy6VH6iQrF6UqmdLxAL1e2Sn4"
+SHEET_URL = "https://docs.google.com/spreadsheets/d/1BO-Y5NS12H8ydqcWcICy6VH6iQrF6UqmdLxAL1e2Sn4/export?format=csv"
 
 @st.cache_data(ttl=600) # 10分間データをキャッシュ
 def load_data():
