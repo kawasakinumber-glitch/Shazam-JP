@@ -8,7 +8,7 @@ st.set_page_config(page_title="Shazam 集計ツール", layout="wide")
 st.title("🎵 Shazam 完全リアルタイム同期システム")
 
 # ==============================================================
-# ⚠️ 注意: ここにURLではなく、英数字の「IDだけ」を正確に入れてください！
+# ⚠️ 注意: ここにURLではなく、長〜い英数字の「IDだけ」を正確に入れてください！
 # ==============================================================
 SHEET_ID = "1BO-Y5NS12H8ydqcWcICy6VH6iQrF6UqmdLxAL1e2Sn4"
 
@@ -21,7 +21,7 @@ def load_sheet_data(sheet_name):
     # シート名を安全な通信文字に変換（スペースなども対応）
     safe_sheet_name = urllib.parse.quote(sheet_name)
     
-    # ➔ 【完全修正】ご指摘のあったURL部分を正しい形式に修正しました
+    # 
     url = f"https://google.com{clean_id}/export?format=csv&sheet={safe_sheet_name}"
     
     # データを読み込み
