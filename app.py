@@ -23,7 +23,7 @@ def load_sheet_data(sheet_name):
     safe_sheet_name = urllib.parse.quote(sheet_name)
     
     # ➔ 【ここが最重要の修正点】正しいGoogleスプレッドシートの通信URLを組み立てます
-    url = f"https://google.com/{clean_id}/gviz/tq?tqx=out:csv&sheet={safe_sheet_name}"
+    url = f"https://google.com{clean_id}/gviz/tq?tqx=out:csv&sheet={safe_sheet_name}"
     
     df = pd.read_csv(url, on_bad_lines='skip')
     
