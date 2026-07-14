@@ -2,40 +2,34 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 import urllib.parse
-import re
 
 # 1. ページの設定
 st.set_page_config(page_title="Shazam 集計ツール", layout="wide")
 st.title("🎵 Shazam アーティスト・曲別データ分析 (シート別管理)")
 
 # ==============================================================
-# ⚠️ ここにスプレッドシートの「URL全体」をそのまま貼り付けてください！
-# 例: SHEET_URL = "https://google.com"
+# ⚠️ 注意: ここにURLではなく、英数字の「IDだけ」を正確に入れてください！
+# 不要なスペースやスラッシュ(/)が入らないように大注意してください。
 # ==============================================================
-SHEET_URL = "https://docs.google.com/spreadsheets/d/1BO-Y5NS12H8ydqcWcICy6VH6iQrF6UqmdLxAL1e2Sn4"
+SHEET_ID = "1BO-Y5NS12H8ydqcWcICy6VH6iQrF6UqmdLxAL1e2Sn4"
 
 # 2. 個別シートを安全に読み込む関数
 @st.cache_data(ttl=0)
 def load_sheet_data(sheet_name):
-    # ➔ URL全体から「ID（英数字の塊）」の部分だけを自動で抜き出すガード処理
-    match = re.search(r"/d/([a-zA-Z0-9-_]+)", SHEET_URL.strip())
-    if not match:
-        st.error("スプレッドシートのURLが正しくありません。URL全体が貼り付けられているか確認してください。")
-        st.stop()
+    # 前後の余計なスペースを自動で完全消去
+    clean_id = SHEET_ID.strip().replace(' ', '').replace('\n', '').replace('\r', '')
     
-    clean_id = match.group(1)
-    
-    # シート名（空白入りなど）をインターネット用の正しい通信文字に安全に変換
+    # シート名を安全な通信文字に変換
     safe_sheet_name = urllib.parse.quote(sheet_name)
     
-    # ➔ 【最重要】ネットワークエラーを回避する最新の安全なエクスポートURL形式
-    url = f"https://docs.google.com{clean_id}/export?format=csv&sheet={safe_sheet_name}"
+    # 最もシンプルで確実に繋がるGoogleの通信用URL
+    url = f"https://google.com{clean_id}/export?format=csv&sheet={safe_sheet_name}"
     
     # データを読み込み
     df = pd.read_csv(url, on_bad_lines='skip')
     
     # 1列目を確実に日時列として処理する
-    df.rename(columns={df.columns[0]: 'datetime'}, inplace=True)
+    df.rename(columns={df.columns: 'datetime'}, inplace=True)
     df['datetime'] = pd.to_datetime(df['datetime'], errors='coerce')
     df = df.dropna(subset=['datetime'])
     return df
