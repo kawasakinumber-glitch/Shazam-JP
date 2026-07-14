@@ -39,7 +39,7 @@ def load_sheet_data(sheet_name):
 # 3. アーティストリストの設定
 # ※自動取得が環境によって制限される場合があるため、最も確実な「手動リスト」をベースにしつつ
 # スプレッドシートのタブ名をここに書き並べるのが一番安全です。
-ARTIST_LIST = ["KEN MIYAKE" , "Hiromitsu Kitayama" ,"Number_i"] # ➔ あなたのシート名（タブ名）に書き換えてください
+ARTIST_LIST = ["KEN%20MIYAKE" , "Hiromitsu%20Kitayama" ,"Number_i"] # ➔ あなたのシート名（タブ名）に書き換えてください
 
 try:
     # 4. 【1段階目】アーティスト名（シート名）の選択
