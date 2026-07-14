@@ -8,8 +8,7 @@ st.set_page_config(page_title="Shazam 集計ツール", layout="wide")
 st.title("🎵 Shazam アーティスト・曲別データ分析 (シート別管理)")
 
 # ==============================================================
-# ⚠️ 注意: ここにURLではなく、英数字の「IDだけ」を正確に入れてください！
-# 不要なスペースやスラッシュ(/)が入らないように大注意してください。
+# ⚠️ 注意: ここにURLではなく、長〜い英数字の「IDだけ」を正確に入れてください！
 # ==============================================================
 SHEET_ID = "1BO-Y5NS12H8ydqcWcICy6VH6iQrF6UqmdLxAL1e2Sn4"
 
@@ -22,20 +21,20 @@ def load_sheet_data(sheet_name):
     # シート名を安全な通信文字に変換
     safe_sheet_name = urllib.parse.quote(sheet_name)
     
-    # 最もシンプルで確実に繋がるGoogleの通信用URL
+    # 正しいGoogleの通信用URL
     url = f"https://google.com{clean_id}/export?format=csv&sheet={safe_sheet_name}"
     
     # データを読み込み
     df = pd.read_csv(url, on_bad_lines='skip')
     
     # 1列目を確実に日時列として処理する
-    df.rename(columns={df.columns: 'datetime'}, inplace=True)
+    df.rename(columns={df.columns[0]: 'datetime'}, inplace=True)
     df['datetime'] = pd.to_datetime(df['datetime'], errors='coerce')
     df = df.dropna(subset=['datetime'])
     return df
 
 # ==============================================================
-# ⚠️ 注意: ここにあなたの「実際のGoogleスプレッドシートのタブ名」を正確に入力してください
+# ➔ 実際のタブ名と完全に一致させました！
 # ==============================================================
 ARTIST_LIST = ["KenMiyake", "HiromitsuKitayama", "Number_i"] 
 
