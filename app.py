@@ -7,7 +7,7 @@ st.set_page_config(page_title="Shazam 集計ツール", layout="wide")
 st.title("🎵 Shazam アーティスト・曲別データ分析 (シート別管理)")
 
 # ※ YOUR_SHEET_ID の部分はご自身のスプレッドシートのIDに書き換えてください
-SHEET_ID = "1BO-Y5NS12H8ydqcWcICy6VH6iQrF6UqmdLxAL1e2Sn4"
+SHEET_ID = "D"
 
 # 2. Googleスプレッドシートから「全シート名（アーティスト名）」を自動取得
 @st.cache_data(ttl=0)
@@ -24,14 +24,17 @@ def get_all_artists():
         # 上記がうまく動かない場合の予備：手動でアーティストシート名を指定することも可能です
         # 例: return ["ArtistA", "ArtistB"]
         pass
-# ➔ 修正箇所：SHEET_IDの前後にある目に見えないゴミ文字（スペースや改行）を自動で強制消去します
-
 
 # ➔ より確実な方法として、個別シートを動的に読み込む関数
 @st.cache_data(ttl=0)
 def load_sheet_data(sheet_name):
-clean_id = SHEET_ID.strip().replace('\n', '').replace('\r', '')
-url = f"https://google.com{clean_id}/gviz/tq?tqx=out:csv&sheet={sheet_name}"
+    clean_id = SHEET_ID.strip().replace('\n', '').replace('\r', '')
+    
+    # ➔ ここを修正：シート名に含まれる空白を安全に通信用文字（%20）に変換する対策を入れます
+    import urllib.parse
+    safe_sheet_name = urllib.parse.quote(sheet_name)
+    
+    url = f"https://google.com{clean_id}/gviz/tq?tqx=out:csv&sheet={safe_sheet_name}"
     df = pd.read_csv(url, on_bad_lines='skip')
     df.rename(columns={df.columns[0]: 'datetime'}, inplace=True)
     df['datetime'] = pd.to_datetime(df['datetime'], errors='coerce')
