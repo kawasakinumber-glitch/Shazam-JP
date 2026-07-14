@@ -26,7 +26,7 @@ def load_sheet_data(gid):
     clean_id = SHEET_ID.strip().replace(' ', '').replace('\n', '').replace('\r', '')
     
     # ➔ 【完全解決】シート名ではなく、確実な数字ID（gid）を使ってGoogleからCSVを引っ張ります
-    url = f"https://google.com{clean_id}/export?format=csv&gid={gid}"
+    url = f"https://docs.google.com{clean_id}/export?format=csv&gid={gid}"
     
     # データを読み込み
     df = pd.read_csv(url, on_bad_lines='skip')
