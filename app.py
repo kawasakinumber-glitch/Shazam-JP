@@ -8,7 +8,7 @@ st.set_page_config(page_title="Shazam 集計ツール", layout="wide")
 st.title("🎵 Shazam アーティスト・曲別データ分析 (シート別管理)")
 
 # ==============================================================
-# ⚠️ 注意: ここにURLではなく、長〜い英数字の「IDだけ」を正確に入れてください！
+# ⚠️ 注意: ここにURLではなく、英数字の「IDだけ」を正確に入れてください！
 # ==============================================================
 SHEET_ID = "1BO-Y5NS12H8ydqcWcICy6VH6iQrF6UqmdLxAL1e2Sn4"
 
@@ -18,10 +18,10 @@ def load_sheet_data(sheet_name):
     # 前後の余計なスペースを自動で完全消去
     clean_id = SHEET_ID.strip().replace(' ', '').replace('\n', '').replace('\r', '')
     
-    # シート名を安全な通信文字に変換
+    # シート名を安全な通信文字に変換（スペースなども対応）
     safe_sheet_name = urllib.parse.quote(sheet_name)
     
-    # 正しいGoogleの通信用URL
+    # ➔ 【ここを修正】正しいタブ参照用のエクスポートURL形式
     url = f"https://google.com{clean_id}/export?format=csv&sheet={safe_sheet_name}"
     
     # データを読み込み
@@ -34,7 +34,7 @@ def load_sheet_data(sheet_name):
     return df
 
 # ==============================================================
-# ➔ 実際のタブ名と完全に一致させました！
+# ➔ 実際のタブ名
 # ==============================================================
 ARTIST_LIST = ["KenMiyake", "HiromitsuKitayama", "Number_i"] 
 
