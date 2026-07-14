@@ -22,7 +22,7 @@ def get_all_artists():
         return list(df_meta.keys()) if hasattr(df_meta, 'keys') else []
     except:
         # 上記がうまく動かない場合の予備：手動でアーティストシート名を指定することも可能です
-        # 例: return ["ArtistA", "ArtistB"]
+        # 例: return ["KEN MIYAKE", "Hiromitsu Kitayama", "Number_i"]
         pass
 
 # ➔ より確実な方法として、個別シートを動的に読み込む関数
