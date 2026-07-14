@@ -7,18 +7,18 @@ st.set_page_config(page_title="Shazam 集計ツール", layout="wide")
 st.title("🎵 Shazam アーティスト・曲別データ分析 (シート別管理)")
 
 # ※ YOUR_SHEET_ID の部分はご自身のスプレッドシートのIDに書き換えてください
-SHEET_ID = "https://docs.google.com/spreadsheets/d/1BO-Y5NS12H8ydqcWcICy6VH6iQrF6UqmdLxAL1e2Sn4/export?format=csv"
+SHEET_URL = "https://docs.google.com/spreadsheets/d/1BO-Y5NS12H8ydqcWcICy6VH6iQrF6UqmdLxAL1e2Sn4/export?format=csv"
 
 # 2. Googleスプレッドシートから「全シート名（アーティスト名）」を自動取得
 @st.cache_data(ttl=0)
 def get_all_artists():
     # スプレッドシート全体の情報を取得して、存在するシート名の一覧を返します
-    meta_url = f"https://google.com{SHEET_ID}/gviz/tq?tqx=out:csv"
+    meta_url = f"https://google.com{SHEET_URL}/gviz/tq?tqx=out:csv"
     try:
         # 1つ目のシートからメタデータを読み込み、全体のシート一覧を取得する処理
         # 通常、指定IDの全シート名を取得するために公開URLの仕様を利用します
         # ここではユーザーが作成したタブ名をそのままアーティスト名として扱います
-        df_meta = pd.read_csv(f"https://google.com{SHEET_ID}/export?format=xlsx", engine='openpyxl')
+        df_meta = pd.read_csv(f"https://google.com{SHEET_YRL}/export?format=xlsx", engine='openpyxl')
         return list(df_meta.keys()) if hasattr(df_meta, 'keys') else []
     except:
         # 上記がうまく動かない場合の予備：手動でアーティストシート名を指定することも可能です
@@ -29,7 +29,7 @@ def get_all_artists():
 @st.cache_data(ttl=0)
 def load_sheet_data(sheet_name):
     # シート名（アーティスト名）を直接指定してCSVとして一発読み込み
-    url = f"https://google.com{SHEET_ID}/gviz/tq?tqx=out:csv&sheet={sheet_name}"
+    url = f"https://google.com{SHEET_URL}/gviz/tq?tqx=out:csv&sheet={sheet_name}"
     df = pd.read_csv(url, on_bad_lines='skip')
     df.rename(columns={df.columns[0]: 'datetime'}, inplace=True)
     df['datetime'] = pd.to_datetime(df['datetime'], errors='coerce')
