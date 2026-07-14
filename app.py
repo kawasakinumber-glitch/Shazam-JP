@@ -18,7 +18,7 @@ def get_all_artists():
         # 1つ目のシートからメタデータを読み込み、全体のシート一覧を取得する処理
         # 通常、指定IDの全シート名を取得するために公開URLの仕様を利用します
         # ここではユーザーが作成したタブ名をそのままアーティスト名として扱います
-        df_meta = pd.read_csv(f"https://google.com{SHEET_ID}/export?format=xlsx", engine='openpyxl')
+        df_meta = pd.read_csv(f"https://google.com/{SHEET_ID}/export?format=xlsx", engine='openpyxl')
         return list(df_meta.keys()) if hasattr(df_meta, 'keys') else []
     except:
         # 上記がうまく動かない場合の予備：手動でアーティストシート名を指定することも可能です
