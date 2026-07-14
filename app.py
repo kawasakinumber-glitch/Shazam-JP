@@ -7,7 +7,7 @@ st.set_page_config(page_title="Shazam 集計ツール", layout="wide")
 st.title("🎵 Shazam アーティスト・曲別データ分析 (シート別管理)")
 
 # ※ YOUR_SHEET_ID の部分はご自身のスプレッドシートのIDに書き換えてください
-SHEET_ID = "1BO-Y5NS12H8ydqcWcICy6VH6iQrF6UqmdLxAL1e2Sn4"
+SHEET_ID = "https://docs.google.com/spreadsheets/d/1BO-Y5NS12H8ydqcWcICy6VH6iQrF6UqmdLxAL1e2Sn4/export?format=csv"
 
 # 2. Googleスプレッドシートから「全シート名（アーティスト名）」を自動取得
 @st.cache_data(ttl=0)
