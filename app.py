@@ -7,20 +7,30 @@ st.set_page_config(page_title="Shazam 集計ツール", layout="wide")
 st.title("🎵 Shazam 日時別データ分析")
 
 # 2. GoogleスプレッドシートからExcel形式（.xlsx）でデータを自動取得
-# ※ タブ一覧を取得するため、format=xlsx に変更しています
 SHEET_URL = "https://docs.google.com/spreadsheets/d/1BO-Y5NS12H8ydqcWcICy6VH6iQrF6UqmdLxAL1e2Sn4/export?format=xlsx"
 
 @st.cache_data(ttl=0)
 def load_all_sheets():
-    # Excelファイルとして読み込み、全シートのデータを取得できるようにする
-    # ※openpyxlライブラリが必要です（pip install openpyxl）
+    # Excelファイルを読み込み、全タブのデータを {タブ名: DataFrame} の辞書形式で一括キャッシュする
     xls = pd.ExcelFile(SHEET_URL)
-    return xls
+    all_sheets = {}
+    for sheet_name in xls.sheet_names:
+        df = pd.read_excel(xls, sheet_name=sheet_name)
+        
+        # 1列目（日付）の列名を 'datetime' に変更し、日付型に変換
+        if not df.empty:
+            df.rename(columns={df.columns[0]: 'datetime'}, inplace=True)
+            df['datetime'] = pd.to_datetime(df['datetime'], errors='coerce')
+            df = df.dropna(subset=['datetime'])
+            all_sheets[sheet_name] = df
+            
+    return all_sheets
 
 try:
-    xls = load_all_sheets()
-    # スプレッドシートのタブ名（シート名）の一覧をアーティスト名として取得
-    artist_list = xls.sheet_names
+    # 全シートのデータを辞書として取得
+    sheets_dict = load_all_sheets()
+    # 辞書のキー（タブ名）の一覧をアーティスト名として取得
+    artist_list = list(sheets_dict.keys())
 
     if artist_list:
         # 3. 2段階のセレクトボックスを配置
@@ -30,13 +40,8 @@ try:
             # 1段階目：アーティスト（タブ名）を選択
             selected_artist = st.selectbox("アーティストを選択してください：", artist_list)
             
-        # 選択されたアーティスト（タブ）のデータを読み込んで整形
-        df = pd.read_excel(xls, sheet_name=selected_artist)
-        
-        # 1列目（日付）の列名を 'datetime' に変更し、日付型に変換
-        df.rename(columns={df.columns[0]: 'datetime'}, inplace=True)
-        df['datetime'] = pd.to_datetime(df['datetime'], errors='coerce')
-        df = df.dropna(subset=['datetime'])
+        # 選択されたアーティスト（タブ）のデータを取得
+        df = sheets_dict[selected_artist]
 
         # 2列目以降のヘッダー（曲名）の一覧を取得
         track_list = list(df.columns[1:])
