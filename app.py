@@ -35,9 +35,6 @@ def load_sheet_data(sheet_name):
     
     url = f"https://google.com{SHEET_ID}/gviz/tq?tqx=out:csv&sheet={safe_sheet_name}"
     df = pd.read_csv(url, on_bad_lines='skip')
-
-    url = f"https://google.com{SHEET_ID}/gviz/tq?tqx=out:csv&sheet={sheet_name}"
-    df = pd.read_csv(url, on_bad_lines='skip')
     df.rename(columns={df.columns[0]: 'datetime'}, inplace=True)
     df['datetime'] = pd.to_datetime(df['datetime'], errors='coerce')
     df = df.dropna(subset=['datetime'])
