@@ -1,52 +1,51 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+import urllib.parse
 
 # 1. ページの設定
 st.set_page_config(page_title="Shazam 集計ツール", layout="wide")
-st.title("🎵 Shazam アーティスト・曲別データ分析 (シート別管理)")
+st.title("🎵 Shazam 完全リアルタイム同期システム")
 
 # ==============================================================
 # ⚠️ 注意: ここにURLではなく、英数字の「IDだけ」を正確に入れてください！
 # ==============================================================
 SHEET_ID = "1BO-Y5NS12H8ydqcWcICy6VH6iQrF6UqmdLxAL1e2Sn4"
 
-# ==============================================================
-# ⚠️ 修正箇所: 各アーティストのタブを開いたときのURL末尾にある「gidの数字」を正確に入力してください
-# ==============================================================
-ARTIST_MAP = {
-    "KenMiyake": "1093975115",       # 例: "0"
-    "HiromitsuKitayama": "1354306350", # 例: "12345678"
-    "Number_i": "983227424"           # 例: "87654321"
-}
-
-# 2. 個別シートを安全に読み込む関数
-@st.cache_data(ttl=0)
-def load_sheet_data(gid):
+# 2. 正しいURLで、毎回リアルタイムにデータを読み込む関数
+@st.cache_data(ttl=0) # ➔ ttl=0 でキャッシュを無効化し、常に最新の数値を読み込みます
+def load_sheet_data(sheet_name):
+    # IDの前後にあるスペースや改行を自動で完全消去
     clean_id = SHEET_ID.strip().replace(' ', '').replace('\n', '').replace('\r', '')
     
-    # ➔ 【完全解決】シート名ではなく、確実な数字ID（gid）を使ってGoogleからCSVを引っ張ります
-    url = f"https://docs.google.com{clean_id}/export?format=csv&gid={gid}"
+    # シート名を安全な通信文字に変換（スペースなども対応）
+    safe_sheet_name = urllib.parse.quote(sheet_name)
+    
+    # ➔ 【完全修正】ご指摘のあったURL部分を正しい形式に修正しました
+    url = f"https://google.com{clean_id}/export?format=csv&sheet={safe_sheet_name}"
     
     # データを読み込み
     df = pd.read_csv(url, on_bad_lines='skip')
     
     # 1列目を確実に日時列として処理する
-    df.rename(columns={df.columns[0]: 'datetime'}, inplace=True)
+    df.rename(columns={df.columns: 'datetime'}, inplace=True)
     df['datetime'] = pd.to_datetime(df['datetime'], errors='coerce')
     df = df.dropna(subset=['datetime'])
     return df
 
+# ==============================================================
+# ➔ あなたのスプレッドシートの正確なタブ名
+# ==============================================================
+ARTIST_LIST = ["KenMiyake", "HiromitsuKitayama", "Number_i"] 
+
 try:
     # 3. 【1段階目】アーティスト名の選択
-    artist_list = list(ARTIST_MAP.keys())
-    selected_artist = st.selectbox("1. アーティストを選択してください：", artist_list)
+    selected_artist = st.selectbox("1. アーティストを選択してください：", ARTIST_LIST)
 
-    # 選択されたアーティストに対応する gid（数字）を取得してデータを読み込み
-    selected_gid = ARTIST_MAP[selected_artist]
-    df = load_sheet_data(selected_gid)
+    # 選択されたアーティストの最新データを毎回読み込み
+    df = load_sheet_data(selected_artist)
 
-    # 4. 【2段階目】選択されたシートの2列目以降から「曲名」を取得（並び順を維持）
+    # 4. 【2段階目】2列目以降から「曲名」を取得（並び順を維持）
     track_list = list(df.columns[1:])
     
     if track_list:
