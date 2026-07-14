@@ -22,7 +22,7 @@ def get_all_artists():
         return list(df_meta.keys()) if hasattr(df_meta, 'keys') else []
     except:
         # 上記がうまく動かない場合の予備：手動でアーティストシート名を指定することも可能です
-        # 例: return ["KEN MIYAKE", "Hiromitsu Kitayama", "Number_i"]
+        # 例: return ["ArtistA", "ArtistB"]
         pass
 
 # ➔ より確実な方法として、個別シートを動的に読み込む関数
@@ -44,7 +44,7 @@ def load_sheet_data(sheet_name):
 # 3. アーティストリストの設定
 # ※自動取得が環境によって制限される場合があるため、最も確実な「手動リスト」をベースにしつつ
 # スプレッドシートのタブ名をここに書き並べるのが一番安全です。
-ARTIST_LIST = ["ArtistA", "ArtistB"] # ➔ あなたのシート名（タブ名）に書き換えてください
+ARTIST_LIST = ["KEN MIYAKE", "Hiromitsu Kitayama", "Number_i"] # ➔ あなたのシート名（タブ名）に書き換えてください
 
 try:
     # 4. 【1段階目】アーティスト名（シート名）の選択
