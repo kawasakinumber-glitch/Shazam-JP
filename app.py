@@ -29,7 +29,7 @@ def load_sheet_data(sheet_name):
     safe_sheet_name = urllib.parse.quote(sheet_name)
     
     # ➔ 【最重要】ネットワークエラーを回避する最新の安全なエクスポートURL形式
-    url = f"https://google.com{clean_id}/export?format=csv&sheet={safe_sheet_name}"
+    url = f"https://docs.google.com{clean_id}/export?format=csv&sheet={safe_sheet_name}"
     
     # データを読み込み
     df = pd.read_csv(url, on_bad_lines='skip')
