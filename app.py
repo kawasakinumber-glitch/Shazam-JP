@@ -18,7 +18,7 @@ def get_all_artists():
         # 1つ目のシートからメタデータを読み込み、全体のシート一覧を取得する処理
         # 通常、指定IDの全シート名を取得するために公開URLの仕様を利用します
         # ここではユーザーが作成したタブ名をそのままアーティスト名として扱います
-        df_meta = pd.read_csv(f"https://google.com{SHEET_ID}/export?format=csv", engine='openpyxl')
+        df_meta = pd.read_csv(f"https://google.com{SHEET_ID}/export?format=xlsx", engine='openpyxl')
         return list(df_meta.keys()) if hasattr(df_meta, 'keys') else []
     except:
         # 上記がうまく動かない場合の予備：手動でアーティストシート名を指定することも可能です
@@ -28,13 +28,8 @@ def get_all_artists():
 # ➔ より確実な方法として、個別シートを動的に読み込む関数
 @st.cache_data(ttl=0)
 def load_sheet_data(sheet_name):
-    clean_id = SHEET_ID.strip().replace('\n', '').replace('\r', '')
-    
-    # ➔ ここを修正：シート名に含まれる空白を安全に通信用文字（%20）に変換する対策を入れます
-    import urllib.parse
-    safe_sheet_name = urllib.parse.quote(sheet_name)
-    
-    url = f"https://google.com{clean_id}/gviz/tq?tqx=out:csv&sheet={safe_sheet_name}"
+    # シート名（アーティスト名）を直接指定してCSVとして一発読み込み
+    url = f"https://google.com{SHEET_ID}/gviz/tq?tqx=out:csv&sheet={sheet_name}"
     df = pd.read_csv(url, on_bad_lines='skip')
     df.rename(columns={df.columns[0]: 'datetime'}, inplace=True)
     df['datetime'] = pd.to_datetime(df['datetime'], errors='coerce')
