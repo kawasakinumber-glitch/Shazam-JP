@@ -12,7 +12,7 @@ st.title("🎵 Shazam アーティスト・曲別データ分析")
 # ⭕ 修正箇所: ここにURL全体（ブラウザのアドレスバーの文字）をそのまま貼り付けてください！
 # 例: SHEET_URL = "https://google.com"
 # ==============================================================
-SHEET_URL = "https://docs.google.com/spreadsheets/d/1BO-Y5NS12H8ydqcWcICy6VH6iQrF6UqmdLxAL1e2Sn4/edit?gid=983227424#gid=983227424"
+SHEET_URL = "https://docs.google.com/spreadsheets/d/1BO-Y5NS12H8ydqcWcICy6VH6iQrF6UqmdLxAL1e2Sn4"
 
 # 2. 指定されたシート（タブ）のURLから毎回リアルタイムにデータを読み込む関数
 @st.cache_data(ttl=0) # ➔ ttl=0 でキャッシュを無効化し、常に最新の数値を読み込みます
