@@ -29,6 +29,10 @@ def get_all_artists():
 @st.cache_data(ttl=0)
 def load_sheet_data(sheet_name):
     # シート名（アーティスト名）を直接指定してCSVとして一発読み込み
+
+    import urllib.parse
+    safe_sheet_name = urllib.parse.quote(sheet_name)
+
     url = f"https://google.com{SHEET_ID}/gviz/tq?tqx=out:csv&sheet={sheet_name}"
     df = pd.read_csv(url, on_bad_lines='skip')
     df.rename(columns={df.columns[0]: 'datetime'}, inplace=True)
