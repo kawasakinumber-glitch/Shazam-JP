@@ -33,7 +33,7 @@ def load_sheet_data(sheet_name):
     import urllib.parse
     safe_sheet_name = urllib.parse.quote(sheet_name)
     
-    url = f"https://google.com{clean_id}/gviz/tq?tqx=out:csv&sheet={safe_sheet_name}"
+    url = f"https://google.com{SHEET_ID}/gviz/tq?tqx=out:csv&sheet={safe_sheet_name}"
     df = pd.read_csv(url, on_bad_lines='skip')
 
     url = f"https://google.com{SHEET_ID}/gviz/tq?tqx=out:csv&sheet={sheet_name}"
