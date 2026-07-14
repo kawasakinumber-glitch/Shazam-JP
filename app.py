@@ -10,7 +10,7 @@ st.title("🎵 Shazam 日時別データ分析")
 # ※ YOUR_SHEET_ID の部分はご自身のスプレッドシートのIDに書き換えてください
 SHEET_URL = "https://docs.google.com/spreadsheets/d/1BO-Y5NS12H8ydqcWcICy6VH6iQrF6UqmdLxAL1e2Sn4/export?format=csv"
 
-@st.cache_data(ttl=600) # 10分間データをキャッシュ
+@st.cache_data(ttl=0) # 10分間データをキャッシュ
 def load_data():
     # 列数が合わないエラー行を自動で飛ばす
     df = pd.read_csv(SHEET_URL, on_bad_lines='skip')
@@ -28,8 +28,8 @@ def load_data():
 try:
     df = load_data()
 
-    # 3. 2列目以降のヘッダー（曲名）の一覧を取得してソート
-    track_list = sorted(list(df.columns[1:]))
+    # 3. 2列目以降のヘッダー（曲名）の一覧をスプレッドシートの並び順のまま取得
+    track_list = list(df.columns[1:])
     
     if track_list:
         selected_track = st.selectbox("分析したい曲名を選択してください：", track_list)
