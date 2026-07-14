@@ -43,7 +43,7 @@ def load_sheet_data(sheet_name):
 # ==============================================================
 # ⚠️ 注意: ここにあなたの「実際のGoogleスプレッドシートのタブ名」を正確に入力してください
 # ==============================================================
-ARTIST_LIST = ["KenMiyake", "Hiromitsu Kitayama", "Number_i"] 
+ARTIST_LIST = ["KenMiyake", "HiromitsuKitayama", "Number_i"] 
 
 try:
     # 3. 【1段階目】アーティスト名（シート名）の選択
