@@ -5,6 +5,10 @@ import plotly.express as px
 # 1. ページの設定
 st.set_page_config(page_title="Shazam 集計ツール", layout="wide")
 st.title("🎵 Shazam 日時別データ分析")
+st.markdown(
+    '<a href="https://docs.google.com/spreadsheets/d/1BO-Y5NS12H8ydqcWcICy6VH6iQrF6UqmdLxAL1e2Sn4" style="font-size: 18px; color: #0066cc;">スプレッドシートURL(🔗共有×)</a>', 
+    unsafe_allow_html=True
+)
 
 # 2. GoogleスプレッドシートからExcel形式（.xlsx）でデータを自動取得
 SHEET_URL = "https://docs.google.com/spreadsheets/d/1BO-Y5NS12H8ydqcWcICy6VH6iQrF6UqmdLxAL1e2Sn4/export?format=xlsx"
